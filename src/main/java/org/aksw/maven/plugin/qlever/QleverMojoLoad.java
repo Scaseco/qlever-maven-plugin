@@ -69,6 +69,9 @@ import org.eclipse.aether.util.filter.DependencyFilterUtils;
 
 import com.google.common.io.CountingInputStream;
 
+/**
+ * Load a QLever database based on recognized RDF data dependencies.
+ */
 @Mojo(name = "load", defaultPhase = LifecyclePhase.PACKAGE)
 public class QleverMojoLoad extends AbstractMojo {
 
@@ -132,7 +135,7 @@ public class QleverMojoLoad extends AbstractMojo {
 //    @Parameter(defaultValue = "${project.build.directory}/tdb2.load.ttl")
 //    private File loadStateFile;
 
-    /**
+    /*
      * Artifacts can be patterns for matching direct dependencies.
      *
      * TODO DRAFT:
