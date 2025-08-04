@@ -48,7 +48,7 @@ mvn clean package -Dmaven.install.skip
             </goals>
             <configuration>
               <dockerTag>commit-bb1bb54</dockerTag>
-              <stxxlMemory>10g</stxxlMemory>
+              <stxxlMemory>1g</stxxlMemory>
             </configuration>
           </execution>
         </executions>
