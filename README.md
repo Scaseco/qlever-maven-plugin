@@ -19,6 +19,11 @@ Check here for the [latest published version](https://central.sonatype.com/artif
 ## Example Usage
 
 This example builds a qlever database using a dataset dependency from our repository.
+By default, Maven will install the artifact to the local repository for caching. To prevent that, use:
+
+```
+mvn clean package -Dmaven.install.skip
+```
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
