@@ -3,7 +3,22 @@ Build qlever database artifacts from data dependencies via docker.
 The plugin automatically processes dependencies whose type denote RDF data, such as `nt.bz2` or `owl.gz`.
 See the help section for a complete list of supported types.
 
+## Maven Dependency
+
+```xml
+<dependency>
+    <groupId>org.aksw.maven.plugins</groupId>
+    <artifactId>qlever-maven-plugin</artifactId>
+    <version>0.0.2</version>
+</dependency>
+```
+
+Check here for the [latest published version](https://central.sonatype.com/artifact/org.aksw.maven.plugins/qlever-maven-plugin).
+
+
 ## Example Usage
+
+This example builds a qlever database using a dataset dependency from our repository.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
