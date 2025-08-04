@@ -60,6 +60,7 @@ import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.DependencyFilter;
+import org.eclipse.aether.graph.Exclusion;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.resolution.DependencyRequest;
@@ -97,6 +98,15 @@ public class QleverMojoLoad extends AbstractMojo {
     @Parameter(property = "qlever.skip", defaultValue = "false")
     protected boolean skip;
 
+    /** Prefix for qlever properties */
+    protected static final String NS = "qlever.";
+
+    @Parameter(property = NS + "docker.image", defaultValue = QleverConstants.dockerImage)
+    protected String dockerImage;
+
+    @Parameter(property = NS + "docker.tag", defaultValue = QleverConstants.dockerTag)
+    protected String dockerTag;
+
     @Parameter(property = "qlever.stxxlMemory")
     private String stxxlMemory;
 
@@ -114,7 +124,7 @@ public class QleverMojoLoad extends AbstractMojo {
     // content types: nt, ttl, nq, trig, owl (could be obtained from Jena registry)
     // compression encodings: gz, bz2 (could be obtained from commons compress)
 
-    @Parameter(defaultValue = "nt,ttl,nq,trig,owl,nt.gz,ttl.gz,nq.gz,trig.gz,owl.gz,nt.bz2,ttl.bz2,nq.bz2,trig.bz2,owl.bz2")
+    @Parameter(defaultValue = "nt,ttl,nq,trig,owl,rdf,nt.gz,ttl.gz,nq.gz,trig.gz,owl.gz,rdf.gz,nt.bz2,ttl.bz2,nq.bz2,trig.bz2,owl.bz2,rdf.bz2")
     private String includeTypes;
 
     @Parameter(defaultValue = "${project.build.directory}/qlever")
@@ -215,12 +225,25 @@ public class QleverMojoLoad extends AbstractMojo {
             dg.close();
         }
 
+        // XXX The code below can likely be upgraded to Maven resolver API
+
         DependencyFilter classpathFlter = DependencyFilterUtils.classpathFilter(JavaScopes.COMPILE);
         CollectRequest collectRequest = new CollectRequest();
         for (org.apache.maven.model.Dependency dep : project.getDependencies()) {
+
+            List<Exclusion> aetherExclusions = new ArrayList<>();
+            for (org.apache.maven.model.Exclusion excl : dep.getExclusions()) {
+                aetherExclusions.add(new Exclusion(
+                    excl.getGroupId(),
+                    excl.getArtifactId(),
+                    "*", // classifier
+                    "*"  // extension
+                ));
+            }
+
             collectRequest.addDependency(new Dependency(new org.eclipse.aether.artifact.DefaultArtifact(
                     dep.getGroupId(), dep.getArtifactId(), dep.getClassifier(),
-                    dep.getType(), dep.getVersion()), JavaScopes.COMPILE));
+                    dep.getType(), dep.getVersion()), JavaScopes.COMPILE, false, aetherExclusions));
         }
 
         collectRequest.setRepositories(project.getRemoteProjectRepositories());
@@ -294,6 +317,8 @@ public class QleverMojoLoad extends AbstractMojo {
 
         String indexName = project.getArtifactId() + "-" + project.getVersion();
         RDFDatabaseBuilderQlever<?> dbLoader = new RDFDatabaseBuilderQlever<>()
+                .setDockerImageName(dockerImage)
+                .setDockerImageTag(dockerTag)
                 .setStxxlMemory(stxxlMemory)
                 .setOutputFolder(outputPath)
                 .setIndexName(indexName);
