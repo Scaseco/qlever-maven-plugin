@@ -10,6 +10,8 @@ Run `mvn package` to create the qlever database artifact. Use `-Dmaven.install.s
 into the local Maven repository.
 
 ```bash
+mkdir /tmp/qlever-maven-example
+cd /tmp/qlever-maven-example
 wget https://raw.githubusercontent.com/Scaseco/qlever-maven-plugin/refs/heads/develop/example/pom.xml
 mvn package -Dmaven.install.skip
 ```
