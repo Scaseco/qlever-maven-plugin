@@ -5,6 +5,15 @@ See the help section for a complete list of supported types.
 
 ## Example Usage
 
+Download the example [pom.xml](https://raw.githubusercontent.com/Scaseco/qlever-maven-plugin/refs/heads/develop/example/pom.xml).
+Run `mvn package` to create the qlever database artifact. Use `-Dmaven.install.skip` to prevent installation (i.e. coyping) of the artifact
+into the local Maven repository.
+
+```bash
+wget https://raw.githubusercontent.com/Scaseco/qlever-maven-plugin/refs/heads/develop/example/pom.xml
+mvn package -Dmaven.install.skip
+```
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
