@@ -1,73 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-
-  <groupId>org.aksw.maven.plugins.examples</groupId>
-  <artifactId>qlever-example</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>my.org.data.text2sparql.2025.qlever</groupId>
+  <artifactId>my-dbpedia</artifactId>
+  <version>1</version>
   <packaging>pom</packaging>
-
-  <dependencies>
-    <dependency>
-      <groupId>it.tidalwave.bluebill</groupId>
-      <artifactId>it-tidalwave-bluebill-taxonomy-birds</artifactId>
-      <version>1.0.15</version>
-      <type>rdf</type>
-      <classifier>ebnitalia_2003</classifier>
-      <exclusions>
-        <exclusion>
-          <groupId>*</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-  </dependencies>
 
   <build>
     <plugins>
       <plugin>
         <groupId>org.aksw.maven.plugins</groupId>
         <artifactId>qlever-maven-plugin</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
-        <configuration>
-          <targetGraph>DEFAULT</targetGraph>
-        </configuration>
+        <version>0.0.2</version>
         <executions>
           <execution>
             <goals>
               <goal>load</goal>
             </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>net.nicoulaj.maven.plugins</groupId>
-        <artifactId>checksum-maven-plugin</artifactId>
-        <version>1.11</version>
-        <configuration>
-          <pomSkip>false</pomSkip>
-          <!--
-          <transitive>true</transitive>
-          <failIfNoFiles>true</failIfNoFiles>
-          <types>
-            <type>ttl.bz2</type>
-            <type>nt</type>
-          </types>
-          -->
-        </configuration>
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>dependencies</goal>
-            </goals>
+            <configuration>
+              <dockerTag>commit-bb1bb54</dockerTag>
+              <stxxlMemory>1g</stxxlMemory>
+            </configuration>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.aksw.data.text2sparql.2025</groupId>
+      <artifactId>dbpedia</artifactId>
+      <version>1.0.0</version>
+      <type>ttl.bz2</type>
+      <classifier>labels_en</classifier>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>maven.aksw.internal</id>
+      <name>AKSW Internal Repository</name>
+      <url>https://maven.aksw.org/archiva/repository/internal</url>
+      <releases><enabled>true</enabled></releases>
+      <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+  </repositories>
+
 </project>
 
