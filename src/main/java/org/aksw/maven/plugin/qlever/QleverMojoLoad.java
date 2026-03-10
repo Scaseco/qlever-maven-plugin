@@ -107,7 +107,7 @@ public class QleverMojoLoad extends AbstractMojo {
     @Parameter(property = NS + "docker.tag", defaultValue = QleverConstants.dockerTag)
     protected String dockerTag;
 
-    @Parameter(property = "qlever.stxxlMemory")
+    @Parameter(property = NS + "stxxlMemory")
     private String stxxlMemory;
 
     /**
